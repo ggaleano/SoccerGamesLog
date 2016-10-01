@@ -15,6 +15,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".NewEntry" />
+        <activity android:name=".Results"
+            android:label="Resutls">
+
+        </activity>
     </application>
 
 </manifest>
