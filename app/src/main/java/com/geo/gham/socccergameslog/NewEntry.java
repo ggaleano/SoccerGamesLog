@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,16 +125,22 @@ public class NewEntry extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
+                        if (tempPlayersGoals <= numberOfGoals && tempPlayersGoals != 0) {
+                            tempPlayers.add(tempClickedName);
+                            playersGoals.add(Integer.valueOf(tempPlayersGoals));
 
-                        tempPlayers.add(tempClickedName);
-                        playersGoals.add(Integer.valueOf(tempPlayersGoals));
+                            //update the top tv after clicking save button and subtracting the goals
+                            numberOfGoals -= tempPlayersGoals;
+                            updateTopTv();
+                            howManyGoalsTv.setText("Click On Another Player To\nAdd Remaining Goals");
+                            tempPlayersGoals = 0;
+                            goalsForThePlayers.setText("0");
 
-                        //update the top tv after clicking save button and subtracting the goals
-                        numberOfGoals -= tempPlayersGoals;
-                        updateTopTv();
-                        howManyGoalsTv.setText("Click On Another Player To\nAdd Remaining Goals");
-                        tempPlayersGoals = 0;
-                        goalsForThePlayers.setText("0");
+                        } else {
+
+                            Toast.makeText(NewEntry.this, "The number of goals for a player can't be greater the total goals or equal 0", Toast.LENGTH_SHORT).show();
+
+                        }
 
 
                         if (numberOfGoals == 0) {
