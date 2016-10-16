@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -161,21 +162,6 @@ public class Results extends AppCompatActivity {
 
                     }
 
-//                    cursor.moveToFirst();
-//
-//                    if (cursor != null) {
-//
-//                        Log.i("NAMES", cursor.getString(playerName));
-//                        Log.i("NAMES", String.valueOf(numberOfGoals));
-//
-////                        String tempPlayerAndGoals = "";
-////                        tempPlayerAndGoals += String.valueOf(cursor.getString(playerName)) + " ("
-////                                + String.valueOf(cursor.getInt(numberOfGoals) + ")\n");
-////                        playerAndGoals.setText(tempPlayerAndGoals);
-//
-//                        cursor.moveToNext();
-
-                    //}
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -189,6 +175,45 @@ public class Results extends AppCompatActivity {
                 });
 
                 builder.show();
+            }
+        });
+
+        // Long click listerner to delete a date from the database
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                Toast.makeText(Results.this, "Long click activated", Toast.LENGTH_SHORT).show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Results.this);
+                builder.setTitle("You are about to delete this item");
+                builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            MainActivity.soccerDB.execSQL("DELETE FROM outcome WHERE date ='" + gameOutcome.get(position).get("date") + "'");
+                            MainActivity.soccerDB.execSQL("DELETE FROM goals WHERE date ='" + gameOutcome.get(position).get("date") + "'");
+
+                            gameOutcome.remove(position);
+                            simpleAdapter.notifyDataSetChanged();
+
+                        } catch (Exception e) {
+
+                            e.printStackTrace();
+
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+
+
+
+                return true;
             }
         });
     }
