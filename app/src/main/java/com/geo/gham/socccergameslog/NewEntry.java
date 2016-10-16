@@ -138,7 +138,7 @@ public class NewEntry extends AppCompatActivity {
 
                         } else {
 
-                            Toast.makeText(NewEntry.this, "The number of goals for a player can't be greater the total goals or equal 0", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(NewEntry.this, "The number of goals for a player can't be greater the total goals or equal 0", Toast.LENGTH_LONG).show();
 
                         }
 
@@ -164,26 +164,33 @@ public class NewEntry extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                try {
-                    MainActivity.soccerDB.execSQL("CREATE TABLE IF NOT EXISTS goals (" +
-                            "id INTEGER PRIMARY KEY, date VARCHAR, playername VARCHAR, numberofgoals INT(2))");
+                if (numberOfGoals == 0) {
 
-                    for (int i = 0; i < tempPlayers.size(); i++) {
+                    try {
+                        MainActivity.soccerDB.execSQL("CREATE TABLE IF NOT EXISTS goals (" +
+                                "id INTEGER PRIMARY KEY, date VARCHAR, playername VARCHAR, numberofgoals INT(2))");
 
-                        MainActivity.soccerDB.execSQL("INSERT INTO goals (date,  playername, numberofgoals)" +
-                                " VALUES ('" + date + "', '" + tempPlayers.get(i) + "', " + playersGoals.get(i) + ")");
+                        for (int i = 0; i < tempPlayers.size(); i++) {
 
-                        Log.i("GOALS", tempPlayers.get(i) + " They Score: " + playersGoals.get(i) + " goals");
+                            MainActivity.soccerDB.execSQL("INSERT INTO goals (date,  playername, numberofgoals)" +
+                                    " VALUES ('" + date + "', '" + tempPlayers.get(i) + "', " + playersGoals.get(i) + ")");
 
+                            Log.i("GOALS", tempPlayers.get(i) + " They Score: " + playersGoals.get(i) + " goals");
+
+                        }
+
+                        Intent i = new Intent(getApplicationContext(), Results.class);
+                        finish();
+                        startActivity(i);
+
+                    } catch (Exception e) {
+
+                        e.printStackTrace();
                     }
+                } else {
 
-                    Intent i = new Intent(getApplicationContext(), Results.class);
-                    finish();
-                    startActivity(i);
+                    Toast.makeText(NewEntry.this, "You haven't finish reporting all the goals", Toast.LENGTH_LONG).show();
 
-                } catch (Exception e) {
-
-                    e.printStackTrace();
                 }
 
             }

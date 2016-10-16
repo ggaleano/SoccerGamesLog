@@ -185,7 +185,7 @@ public class Results extends AppCompatActivity {
                 Toast.makeText(Results.this, "Long click activated", Toast.LENGTH_SHORT).show();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(Results.this);
-                builder.setTitle("You are about to delete this item");
+                builder.setTitle("You are about to delete this date");
                 builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
